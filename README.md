@@ -3,7 +3,7 @@ Ansible_final is a repo which allows to automatise configuration of servers.
 
 # Environment 
   
-
+![alt text](https://zanekkk/ansible_final/environment.png)
 
 ## Installation
 Make sure you have installed ansible on your machine. 
@@ -30,8 +30,6 @@ Set every Ip for your servers in hosts.ini and playbook.yml
 52.29.187.81 ansible_user=ec2-user
 52.59.217.26 ansible_user=ec2-user
 ```
-
-3.
 
 
 ## Usage
