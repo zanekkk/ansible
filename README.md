@@ -3,7 +3,7 @@ Ansible_final is a repo which allows to automatise configuration of servers.
 
 # Environment 
   
-![alt text](https://zanekkk/ansible_final/environment.png)
+![alt text](https://github.com/zanekkk/pp5/environment.png)
 
 ## Installation
 Make sure you have installed ansible on your machine. 
