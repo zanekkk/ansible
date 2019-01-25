@@ -1,0 +1,43 @@
+---
+- hosts: stats
+  become: yes
+  vars:
+    grafana_url: "https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-5.3.4-1.x86_64.rpm"
+    influxdb_url: "https://dl.influxdata.com/influxdb/releases/influxdb-1.7.1.x86_64.rpm"
+    app1_private: 172.31.27.22
+    app2_private: 172.31.30.51
+  tasks:
+    - include_tasks: tasks/configure-databases.yml
+    - include_tasks: tasks/configure-grafana.yml
+
+- hosts: app1
+  become: yes
+  vars:
+    telegraf_url: "https://dl.influxdata.com/telegraf/releases/telegraf-1.8.3-1.x86_64.rpm"
+    db_node: 
+  tasks:
+    - include_tasks: tasks/configure-app-node.yml
+    - include_tasks: tasks/configure-telegraf1.yml
+
+- hosts: app2
+  become: yes
+  vars:
+    telegraf_url: "https://dl.influxdata.com/telegraf/releases/telegraf-1.8.3-1.x86_64.rpm"
+    db_node: 
+  tasks:
+    - include_tasks: tasks/configure-app-node.yml
+    - include_tasks: tasks/configure-telegraf2.yml
+
+- hosts: loadbalancer
+  become: yes
+  vars:
+    app1_private: 172.31.27.22
+    app2_private: 172.31.30.51
+    loadbalancer: 18.194.56.138
+  tasks:
+    - include_tasks: tasks/configure-loadbalancer.yml
+
+
+    
+
+    

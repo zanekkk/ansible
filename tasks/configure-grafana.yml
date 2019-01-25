@@ -1,0 +1,52 @@
+- name: "Install Grafana"
+  yum:
+    name: "{{grafana_url}}"
+    state: present
+- name: "Upload grafana.ini template"
+  template:
+    src: templates/grafana.ini
+    dest: /etc/grafana/grafana.ini
+    mode: '640'
+- service:
+    name: "grafana-server"
+    state: started
+- name: "Create datasource for app node 1"
+  grafana_datasource:
+    grafana_user: admin
+    grafana_password: admin
+    name: appnode1
+    grafana_url: "http://127.0.0.1:8080"
+    ds_type: influxdb
+    url: http://{{"app1_private"}}:8086
+    database: appnode1-metrics
+    user: appnode1-server
+    state: present
+    access: direct
+- name: "Create datasource for app node 2"
+  grafana_datasource:
+    grafana_user: admin
+    grafana_password: admin
+    name: appnode2
+    grafana_url: "http://127.0.0.1:8080"
+    ds_type: influxdb
+    url: http://{{"app2_private"}}:8086
+    database: appnode2-metrics
+    user: appnode2-server
+    state: present
+    access: direct
+- name: "Copy dashboards to server"
+  copy:
+    src: dashboard/dboard.json
+    dest: /tmp/dboard.json
+- name: Import Grafana dashboard foo
+  tags: [grafana, dashboard]
+  grafana_dashboard:
+    grafana_url: "http://127.0.0.1:8080"
+    grafana_user: "admin"
+    grafana_password: "admin"
+    state: present
+    slug: apache
+    message: Updated by ansible
+    overwrite: yes
+    path: /tmp/dboard.json
+  ignore_errors: yes

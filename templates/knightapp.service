@@ -1,0 +1,13 @@
+[Unit]
+Description=Sevice
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/java -jar /opt/prod/knightapp-0.0.1-SNAPSHOT.jar
+restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
